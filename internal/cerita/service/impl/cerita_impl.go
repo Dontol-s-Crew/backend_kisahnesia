@@ -65,7 +65,7 @@ func (S ServiceCeritaImpl) ServiceGetAllCerita(ctx context.Context) (dto.CeritaR
 	}
 	lenisi := int64(len(isi))
 	for i := int64(0); i < lenisi; i++ {
-		Response[mapss[isi[i].Id]].Story = append(Response[mapss[isi[i].Id]].Story, &isi[i].Paragraft)
+		Response[mapss[isi[i].Cerita_id]].Story = append(Response[mapss[isi[i].Cerita_id]].Story, &isi[i].Paragraft)
 	}
 	return Response, nil
 }
