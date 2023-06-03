@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 	"os"
 	"strings"
@@ -62,6 +61,4 @@ func main() {
 	})
 	handler := c.Handler(r)
 	http.ListenAndServe(":8000", handler)
-	fmt.Print("work")
-
 }

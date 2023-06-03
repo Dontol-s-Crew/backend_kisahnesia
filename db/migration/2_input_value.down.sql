@@ -1,0 +1,3 @@
+TRUNCATE "isi";
+TRUNCATE "cerita" CASCADE;
+TRUNCATE "user" CASCADE;
