@@ -5,13 +5,13 @@ import "time"
 type Cerita struct {
 	Id           int64     `db:"Id"`
 	User_id      int64     `db:"User_id"`
-	Ilutrasi     string    `db:"Ilutrasi"`
-	Cover        string    `db:"Cover"`
 	Populer      int64     `db:"Populer"`
-	Judul        string    `db:"Judul"`
+	Ilustrasi    string    `db:"Ilustrasi"`
+	Cover        string    `db:"Cover"`
 	Daerah       string    `db:"Daerah"`
-	Status       bool      `db:"Status"`
+	Judul        string    `db:"Judul"`
 	Genre        string    `db:"Genre"`
+	Status       bool      `db:"Status"`
 	Time_updated time.Time `db:"Time_updated"`
 	Time_created time.Time `db:"Time_created"`
 }
@@ -24,6 +24,7 @@ type Isi struct {
 }
 
 type Text []*Isi
+type ArrayCerita []*Cerita
 
 func AddCerita_id(data Text, id int64) {
 	for index := range data {

@@ -9,4 +9,6 @@ import (
 type RepositoryCeritaApi interface {
 	RepositoryInsertText(data entity.Text, ctx context.Context) error
 	RepositoryInsertCerita(data entity.Cerita, ctx context.Context) (int64, error)
+	GetAllCeritaRepo(ctx context.Context) (entity.ArrayCerita, error)
+	GetAllIsiRepo(ctx context.Context) (entity.Text, error)
 }

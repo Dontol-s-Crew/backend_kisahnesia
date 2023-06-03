@@ -8,4 +8,5 @@ const (
 	API_PATH_ROOT_CERITA        = "/cerita"
 	API_PATH_POST_UPLOAD        = "/upload"
 	API_PATH_GET_IMAGE          = "/image/{catagory}/{id}"
+	API_PATH_GET_ALL            = "/all"
 )
