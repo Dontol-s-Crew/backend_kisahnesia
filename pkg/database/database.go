@@ -13,6 +13,7 @@ func GetDatabase(dbAddress string, dbUsername string, dbPassword string, dbName 
 
 	dataSourceName := fmt.Sprintf("host=%s port=5432 user=%s password=%s dbname=%s sslmode=disable",
 		dbAddress, dbUsername, dbPassword, dbName)
+	fmt.Print(dataSourceName)
 	db, err := sql.Open("postgres", dataSourceName)
 	if err != nil {
 		log.Fatalf("Error GetDatabase sql open connection fatal error: %v", err)
