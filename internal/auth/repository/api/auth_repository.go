@@ -8,5 +8,5 @@ import (
 
 type AuthRepoInterface interface {
 	GetUserDataRepo(ctx context.Context) (entity.Userdbs, error)
-	InsertDataUserRepo(ctx context.Context, userdata entity.Userdb) error
+	InsertDataUserRepo(ctx context.Context, userdata entity.Userdb) (int64, error)
 }

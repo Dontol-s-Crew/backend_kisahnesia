@@ -11,8 +11,9 @@ CREATE SEQUENCE user_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 
 
 CREATE TABLE "user" (
     "id" bigint DEFAULT nextval('user_id_seq') NOT NULL,
-    "email" character varying(255) NOT NULL,
-    "password" character varying(255) NOT NULL,
+    "email" character varying(255) UNIQUE NOT NULL,
+    "password" text NOT NULL,
+    "nama" character varying(255) NOT NULL,
     "is_admin" boolean default false,
     "time_updated" timestamp default current_timestamp,
     "time_created" timestamp default current_timestamp,
@@ -29,11 +30,13 @@ CREATE SEQUENCE cerita_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 922337203685477580
 CREATE TABLE "cerita" (
     "id" bigint DEFAULT nextval('cerita_id_seq') NOT NULL,
     "user_id" bigint NOT NULL,
+    "populer" bigint default 0,
     "ilutrasi" text NOT NULL,
     "cover" text NOT NULL,
     "daerah" character varying(255) NOT NULL,
     "judul" character varying(255) NOT NULL,
-    "status" boolean NOT NULL,
+    "genre" character varying(255) NOT NULL,
+    "status" boolean default false,
     "time_updated" timestamp default current_timestamp,
     "time_created" timestamp default current_timestamp,
     CONSTRAINT "cerita_pkey" PRIMARY KEY ("id")

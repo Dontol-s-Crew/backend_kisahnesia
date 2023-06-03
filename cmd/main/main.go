@@ -7,8 +7,10 @@ import (
 	"os"
 	"strings"
 
+	controller "github.com/Dontol-s-Crew/backend_kisahnesia.git/pkg/controller"
 	"github.com/Dontol-s-Crew/backend_kisahnesia.git/pkg/database"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func getEnvVariableValues() map[string]string {
@@ -46,19 +48,20 @@ func initializeGlobalRouter(envVariables map[string]string) *mux.Router {
 	for _, v := range arrayWhitelistedUrls {
 		whitelistedUrls[v] = true
 	}
-
 	return r
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	return
 }
 
 func main() {
 	envVariable := getEnvVariableValues()
-	_ = initializeDatabase(envVariable)
+	db := initializeDatabase(envVariable)
 	r := initializeGlobalRouter(envVariable)
-	http.ListenAndServe(":8000", r)
+	controller.InitializeController(r, db)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:2000"},
+		AllowCredentials: true,
+	})
+	handler := c.Handler(r)
+	http.ListenAndServe(":8000", handler)
 	fmt.Print("work")
 
 }

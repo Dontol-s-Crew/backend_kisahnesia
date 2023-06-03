@@ -17,8 +17,8 @@ func ProvideAuthRepisitoryImpl(DB *sql.DB) *AuthRepositoryImpl {
 }
 
 const (
-	SELECT_DATA_USERS = `SELECT * FROM users`
-	INSERT_DATA_USER  = `INSERT INTO users(password,email) VALUES ($1,$2)`
+	SELECT_DATA_USERS = `SELECT * FROM "user"`
+	INSERT_DATA_USER  = `INSERT INTO "user" (nama,password,email) VALUES ($1,$2,$3) RETURNING id`
 )
 
 func (t AuthRepositoryImpl) GetUserDataRepo(ctx context.Context) (entity.Userdbs, error) {
@@ -33,7 +33,7 @@ func (t AuthRepositoryImpl) GetUserDataRepo(ctx context.Context) (entity.Userdbs
 	}
 	for rows.Next() {
 		var temp2 entity.Userdb
-		if err := rows.Scan(&temp2.Id, &temp2.Password, &temp2.Email, &temp2.Is_admin, &temp2.Time_created, &temp2.Time_updated); err != nil {
+		if err := rows.Scan(&temp2.Id, &temp2.Nama, &temp2.Password, &temp2.Email, &temp2.Is_admin, &temp2.Time_created, &temp2.Time_updated); err != nil {
 			return nil, err
 		}
 		temp = append(temp, &temp2)
@@ -41,16 +41,23 @@ func (t AuthRepositoryImpl) GetUserDataRepo(ctx context.Context) (entity.Userdbs
 	return temp, nil
 }
 
-func (t AuthRepositoryImpl) InsertDataUserRepo(ctx context.Context, userdata entity.Userdb) error {
+func (t AuthRepositoryImpl) InsertDataUserRepo(ctx context.Context, userdata entity.Userdb) (int64, error) {
 	stmt, err := t.DB.PrepareContext(ctx, INSERT_DATA_USER)
 	if err != nil {
 		fmt.Println("prepare err")
-		return err
+		fmt.Println(err)
+		return 0, err
 	}
-	_, err = stmt.QueryContext(ctx, userdata.Password, userdata.Email)
+	rows, err := stmt.QueryContext(ctx, userdata.Nama, userdata.Password, userdata.Email)
 	if err != nil {
 		fmt.Println("Querry err")
-		return err
+		return 0, err
 	}
-	return nil
+	var temp int64
+	for rows.Next() {
+		if err := rows.Scan(&temp); err != nil {
+			return 0, err
+		}
+	}
+	return temp, nil
 }
