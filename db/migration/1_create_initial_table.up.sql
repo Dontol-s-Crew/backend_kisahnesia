@@ -31,7 +31,7 @@ CREATE TABLE "cerita" (
     "id" bigint DEFAULT nextval('cerita_id_seq') NOT NULL,
     "user_id" bigint NOT NULL,
     "populer" bigint default 0,
-    "ilutrasi" text NOT NULL,
+    "ilustrasi" text NOT NULL,
     "cover" text NOT NULL,
     "daerah" character varying(255) NOT NULL,
     "judul" character varying(255) NOT NULL,

@@ -32,7 +32,7 @@ func (S ServiceCeritaImpl) ServicePengumpulanCerita(ctx context.Context, data dt
 	}
 	data.Id_user = 2 //hapus setelah debungging
 	entitycerita, _ := dto.UploadCeritaToEntityCerita(data)
-	entitycerita.Ilutrasi = iduuid.String() + fileExtensionilustrasi
+	entitycerita.Ilustrasi = iduuid.String() + fileExtensionilustrasi
 	entitycerita.Cover = iduuid.String() + fileExtensionCover
 	_, err = S.S.RepositoryInsertCerita(entitycerita, ctx)
 	// entity.AddCerita_id(entityisi, id)
@@ -41,4 +41,31 @@ func (S ServiceCeritaImpl) ServicePengumpulanCerita(ctx context.Context, data dt
 		return err
 	}
 	return nil
+}
+
+func (S ServiceCeritaImpl) ServiceGetAllCerita(ctx context.Context) (dto.CeritaResponses, error) {
+	mapss := make(map[int64]int64)
+	cerita, err := S.S.GetAllCeritaRepo(ctx)
+	if err != nil {
+		return nil, err
+	}
+	var Response dto.CeritaResponses
+	ceritalen := int64(len(cerita))
+	for i := int64(0); i < ceritalen; i++ {
+		var temp dto.CeritaResponse
+		var tempstring []*string
+		temp.Story = tempstring
+		temp = dto.CeritaToCeritaResponse(cerita[i])
+		mapss[cerita[i].Id] = i
+		Response = append(Response, &temp)
+	}
+	isi, err := S.S.GetAllIsiRepo(ctx)
+	if err != nil {
+		return nil, err
+	}
+	lenisi := int64(len(isi))
+	for i := int64(0); i < lenisi; i++ {
+		Response[mapss[isi[i].Id]].Story = append(Response[mapss[isi[i].Id]].Story, &isi[i].Paragraft)
+	}
+	return Response, nil
 }

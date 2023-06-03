@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 
@@ -46,9 +47,26 @@ func (CC CeritaController) GetImage(w http.ResponseWriter, r *http.Request) {
 	w.Write(fileBytes)
 	return
 }
+func (CC CeritaController) GetAllCerita(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	CeritaAll, err := CC.S.ServiceGetAllCerita(ctx)
+	if err != nil {
+		panic(err)
+	}
+	arr, err := json.Marshal(CeritaAll)
+	if err != nil {
+		panic(err)
+	}
+	arr, err = json.MarshalIndent(CeritaAll, "", " ")
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(arr)
+	return
+}
 
 func (CC CeritaController) InitializeController() {
 	router := CC.X.PathPrefix(global.API_PATH_ROOT_CERITA).Subrouter()
 	router.HandleFunc(global.API_PATH_POST_UPLOAD, CC.HandlerUploadPost).Methods(http.MethodPost)
 	router.HandleFunc(global.API_PATH_GET_IMAGE, CC.GetImage).Methods(http.MethodGet)
+	router.HandleFunc(global.API_PATH_GET_ALL, CC.GetAllCerita).Methods(http.MethodGet)
 }
